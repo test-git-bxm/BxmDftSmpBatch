@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.bankwareglobal.com/schema/batchex http://www.bankwareglobal.com/schema/batchex/spring-batch-ex.xsd
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="classpath:JobConfig.xml"/>
+	
+    <job-component xmlns="http://www.bankwareglobal.com/schema/batchex" id="jobcomp" with-dependon="true">
+        <base-package name="bxm.dft.smp.batch.bean">
+            <include name="MSmpMultiWriter*Btch"/>
+        </base-package>
+    </job-component>
+	
+	<!-- 
+    	* 배치작업 : Multi Writer 샘플
+    	* 배치스텝
+    		- JSmpMultiWriter100 : DB에서 데이터를 Read하여 Writer를 여러개(DB, File 등)를 구성하여 처리
+     -->
+    <job id="JSmpMultiWriter" xmlns="http://www.bankwareglobal.com/schema/batchex">
+        <step id="JSmpMultiWriter100" parent="parentStep" >
+            <tasklet tm-datasource="MainDS"> 
+                <chunk reader="MSmpMultiWriterBtch" processor="MSmpMultiWriterBtch" writer="WJSmpMultiWriter100"/>
+            </tasklet>
+        </step>
+    </job>
+    
+    <!-- 
+    	* Multi Writer Bean 정의
+    	 - main : Writer IO(Processor return IO) 를 그대로 처리
+    	 - sub : 정의된 sub IO명에 해당하는 IO를 Writer로 전달 처리
+     -->
+    <bean id="WJSmpMultiWriter100" parent="WMultiWriter">
+		<property name="main">
+				<list>
+					<ref bean="MSmpMultiWriterBtch"/>
+					<ref bean="WJSmpMultiWriter100_3"/>
+				</list>
+		</property>
+		<property name="sub">
+				<map>
+					<entry key="WJSmpMultiWriter100_1" value="sub01"/>
+					<entry key="WJSmpMultiWriter100_2" value="sub02"/>
+				</map>
+		</property>
+	</bean>
+    
+    <!-- 
+		* Fixed File 로 Write 하기위한 bean 설정 (sub io)
+	 -->
+    <bean id="WJSmpMultiWriter100_1" parent="WFix" scope="step">
+        <property name="resource" value="file:///data1/prod/bxm400/dat/multi_sub01_write.txt" />
+        <property name="encoding" value="UTF-8" />
+        <property name="targetType" value="bxm.dft.smp.batch.bean.dto.MSmpMultiWriterBtch03Dto" />
+	</bean>
+	
+	<!-- 
+		* Delimited File 로 Write 하기위한 bean 설정 (sub io)
+	 -->
+	<bean id="WJSmpMultiWriter100_2" parent="WDelimit" scope="step">
+        <property name="resource" value="file:///data1/prod/bxm400/dat/multi_sub02_write.txt" />
+        <property name="encoding" value="UTF-8" />
+        <property name="delimiter" value=";" />
+        <property name="targetType" value="bxm.dft.smp.batch.bean.dto.MSmpMultiWriterBtch04Dto" />
+	</bean>
+	
+	<!-- 
+		* Delimited File 로 Write 하기위한 bean 설정 (main io)
+	 -->
+	<bean id="WJSmpMultiWriter100_3" parent="WDelimit" scope="step">
+        <property name="resource" value="file:///data1/prod/bxm400/dat/multi_main_write.txt" />
+        <property name="encoding" value="UTF-8" />
+        <property name="delimiter" value="," />
+        <property name="targetType" value="bxm.dft.smp.batch.bean.dto.MSmpMultiWriterBtch02Dto" />
+	</bean>
+</beans>

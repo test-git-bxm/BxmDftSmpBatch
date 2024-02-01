@@ -1,0 +1,7 @@
+OMM bxm.dft.smp.batch.dbio.dto.DSmpDeptTst001Dto
+<description="">
+{
+	Integer feduDeptNo<length=2 description="부서번호">;
+	String feduDeptNm<length=14 description="부서명">;
+	String feduAdrCtnt<length=13 description="주소정보">;
+}

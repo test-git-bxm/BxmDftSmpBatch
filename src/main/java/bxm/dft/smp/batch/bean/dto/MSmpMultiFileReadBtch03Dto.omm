@@ -1,0 +1,5 @@
+OMM bxm.dft.smp.batch.bean.dto.MSmpMultiFileReadBtch03Dto
+<description="MULTI FILE READ 샘플 03 DTO">
+{
+	bxm.dft.smp.batch.dbio.dto.DSmpEmpTmp001Dto grid01<length=0 description="임시직원용GRID01">;
+}

@@ -1,0 +1,5 @@
+OMM bxm.dft.smp.batch.dbio.dto.DSmpEmpTmp001selectList01InDto
+<description="샘플용직원조회Tmp SelectList01Out DTO">
+{
+	Integer feduEmpNo<length=9 description="FW샘플 임직원번호">;
+}

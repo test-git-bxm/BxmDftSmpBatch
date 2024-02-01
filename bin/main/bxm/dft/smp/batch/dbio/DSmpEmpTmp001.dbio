@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bxm.dft.smp.batch.dbio.DSmpEmpTmp001">
+<!--Generated Fri Sep 28 11:03:17 KST 2018-->
+<insert id="insert01">
+INSERT INTO SMP_EMP_TMP
+SELECT FEDU_EMP_NO AS feduEmpNo    /*FW샘플 임직원번호*/
+     , FEDU_EMP_NM AS feduEmpNm    /*FW샘플 임직원명*/
+     , FEDU_OCCP_NM AS feduOccpNm    /*FW샘플 직업명*/
+     , FEDU_MNGR_EMP_NO AS feduMngrEmpNo    /*FW샘플 관리자임직원번호*/
+     , FEDU_HIRE_DT AS feduHireDt    /*FW샘플 입사일자*/
+     , FEDU_PAY_AMT AS feduPayAmt    /*FW샘플 급여금액*/
+     , FEDU_DEPT_NO AS feduDeptNo    /*FW샘플 부서번호*/
+  FROM SMP_EMP_TST
+</insert>
+<delete id="delete01">
+DELETE FROM SMP_EMP_TMP
+</delete>
+<insert id="insert02" parameterType="bxm.dft.smp.batch.dbio.dto.DSmpEmpTmp001Dto">
+INSERT INTO SMP_EMP_TMP    /* 샘플용직원정보TMP */
+(
+       FEDU_EMP_NO    /*FW샘플 임직원번호*/
+     , FEDU_EMP_NM    /*FW샘플 임직원명*/
+     , FEDU_OCCP_NM    /*FW샘플 직업명*/
+     , FEDU_MNGR_EMP_NO    /*FW샘플 관리자임직원번호*/
+     , FEDU_HIRE_DT    /*FW샘플 입사일자*/
+     , FEDU_PAY_AMT    /*FW샘플 급여금액*/
+     , FEDU_DEPT_NO    /*FW샘플 부서번호*/
+)
+VALUES 
+(
+       #{feduEmpNo, jdbcType=NUMERIC}    /*FW샘플 임직원번호*/
+     , #{feduEmpNm, jdbcType=VARCHAR}    /*FW샘플 임직원명*/
+     , #{feduOccpNm, jdbcType=VARCHAR}    /*FW샘플 직업명*/
+     , #{feduMngrEmpNo, jdbcType=NUMERIC}    /*FW샘플 관리자임직원번호*/
+     , #{feduHireDt, jdbcType=VARCHAR}    /*FW샘플 입사일자*/
+     , #{feduPayAmt, jdbcType=NUMERIC}    /*FW샘플 급여금액*/
+     , #{feduDeptNo, jdbcType=NUMERIC}    /*FW샘플 부서번호*/
+)
+</insert>
+<select id="selectList01" parameterType="bxm.dft.smp.batch.dbio.dto.DSmpEmpTmp001selectList01InDto" resultType="bxm.dft.smp.batch.dbio.dto.DSmpEmpTmp001selectList01OutDto">
+SELECT    /* 샘플용직원정보TMP */
+        FEDU_EMP_NO AS feduEmpNo,     /*FW샘플 임직원번호*/
+        FEDU_EMP_NM AS feduEmpNm,     /*FW샘플 임직원명*/
+        FEDU_OCCP_NM AS feduOccpNm,     /*FW샘플 직업명*/
+        FEDU_MNGR_EMP_NO AS feduMngrEmpNo,     /*FW샘플 관리자임직원번호*/
+        FEDU_HIRE_DT AS feduHireDt,     /*FW샘플 입사일자*/
+        FEDU_PAY_AMT AS feduPayAmt,     /*FW샘플 급여금액*/
+        FEDU_DEPT_NO AS feduDeptNo    /*FW샘플 부서번호*/
+  FROM  SMP_EMP_TMP
+ WHERE FEDU_EMP_NO = #{feduEmpNo}
+</select>
+<select id="selectList02" resultType="bxm.dft.smp.batch.dbio.dto.DSmpEmpTmp001selectList01OutDto">
+SELECT    /* 샘플용직원정보TMP */
+        FEDU_EMP_NO AS feduEmpNo,     /*FW샘플 임직원번호*/
+        FEDU_EMP_NM AS feduEmpNm,     /*FW샘플 임직원명*/
+        FEDU_OCCP_NM AS feduOccpNm,     /*FW샘플 직업명*/
+        FEDU_MNGR_EMP_NO AS feduMngrEmpNo,     /*FW샘플 관리자임직원번호*/
+        FEDU_HIRE_DT AS feduHireDt,     /*FW샘플 입사일자*/
+        FEDU_PAY_AMT AS feduPayAmt,     /*FW샘플 급여금액*/
+        FEDU_DEPT_NO AS feduDeptNo    /*FW샘플 부서번호*/
+  FROM  SMP_EMP_TMP
+</select>
+</mapper>

@@ -1,0 +1,167 @@
+
+// buildscript
+buildscript {
+	repositories {
+	}
+	dependencies {
+	}
+}
+
+// plugins
+plugins {
+	id 'java'
+	id "eclipse"
+	id "maven-publish"
+}
+
+// variables
+group = 'io.bankwareglobal.bxm'
+version = '1.0.0'
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+// apply plugin
+apply plugin: 'maven-publish'
+
+// repositories
+repositories {
+	jcenter()
+	maven {
+		url "${artifactory_url_0}"
+			credentials {
+				username "${artifactory_user_0}"
+				password "${artifactory_password_0}"
+		}
+	}
+	maven {
+		url "${artifactory_url_1}"
+			credentials {
+				username "${artifactory_user_1}"
+				password "${artifactory_password_1}"
+		}
+	}
+}
+
+// jar
+jar {
+    enabled = true
+    from('src/main/java') {
+		include  '**/*.dbio'
+	}
+}
+
+// sourceSet
+sourceSets {
+    main {
+        java {
+            // include *.dbio
+            srcDirs = ['src/main/java', 'src/main/resources', 'src/gen/java']
+        }
+    }
+}
+
+// test
+test {
+}
+
+// publising
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			artifact jar.archiveFile.get().asFile
+		}
+	}
+	repositories {
+		maven {
+			url "${publishing_artifactory_url}"
+				credentials {
+					username "${publishing_artifactory_user}"
+					password "${publishing_artifactory_password}"
+			}
+		}
+	}
+}
+
+// dependencies
+dependencies {
+	compile group: 'bxm-runtime', name: 'bxm-batch', version: '5.0.0', transitive: false
+	compile group: 'bxm-runtime', name: 'bxm-batch-default-extension', version: '5.0.0', transitive: false
+	compile group: 'bxm-runtime', name: 'bxm-cache', version: '5.0.0', transitive: false
+	compile group: 'bxm-runtime', name: 'bxm-centercut', version: '5.0.0', transitive: false
+	compile group: 'bxm-runtime', name: 'bxm-common', version: '5.0.0', transitive: false
+	compile group: 'bxm-runtime', name: 'bxm-container', version: '5.0.0', transitive: false
+	compile group: 'bxm-runtime', name: 'bxm-context', version: '5.0.0', transitive: false
+	compile group: 'bxm-runtime', name: 'bxm-default-extension', version: '5.0.0', transitive: false
+	compile group: 'bxm-runtime', name: 'bxm-deferred', version: '5.0.0', transitive: false
+	compile group: 'bxm-runtime', name: 'bxm-omm-common', version: '5.0.0', transitive: false
+	compile group: 'bxm-runtime', name: 'bxm-omm-marshaller', version: '5.0.0', transitive: false
+	compile group: 'bxm-tool', name: 'bxm-builder-tester', version: '5.0.0', transitive: false
+	compile group: 'bxm-tool', name: 'bxm-test-support', version: '4.1.0+', transitive: false
+	compile group: 'bxmc-tool', name: 'bxmc-das-tester', version: '5.0.0', transitive: false
+	compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.7', transitive: false
+	compile group: 'ch.qos.logback', name: 'logback-core', version: '1.1.7', transitive: false
+	compile group: 'com.atomikos', name: 'atomikos-util', version: '4.0.6'
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.8.10', transitive: false
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.8.10', transitive: false
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.10', transitive: false
+	compile group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.7', transitive: false
+	compile group: 'commons-codec', name: 'commons-codec', version: '1.11', transitive: false
+	compile group: 'commons-collections', name: 'commons-collections', version: '3.2.2', transitive: false
+	compile group: 'commons-io', name: 'commons-io', version: '2.4', transitive: false
+	compile group: 'commons-lang', name: 'commons-lang', version: '2.4', transitive: false
+	compile group: 'commons-logging', name: 'commons-logging', version: '1.2', transitive: false
+	compile group: 'commons-pool', name: 'commons-pool', version: '1.6', transitive: false
+	compile group: 'commons-validator', name: 'commons-validator', version: '1.5.1', transitive: false
+	compile group: 'javax.batch', name: 'javax.batch-api', version: '1.0', transitive: false
+	compile group: 'javax.jms', name: 'jms', version: '1.1', transitive: false
+	compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0', transitive: false
+	compile group: 'javax.transaction', name: 'javax.transaction-api', version: '1.2'
+	compile group: 'net.sf.ehcache', name: 'ehcache', version: '2.10.4', transitive: false
+	compile group: 'org.apache.bcel', name: 'bcel', version: '5.2', transitive: false 
+	compile group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.1.1', transitive: false
+	compile group: 'org.apache.commons', name: 'commons-exec', version: '1.3', transitive: false
+	compile group: 'org.apache.commons', name: 'commons-pool2', version: '2.4.3', transitive: false
+	compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3', transitive: false
+	compile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.8', transitive: false
+	compile group: 'org.apache.velocity', name: 'velocity', version: '1.7', transitive: false
+	compile group: 'org.aspectj', name: 'aspectjrt', version: '1.8.13', transitive: false
+	compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.13', transitive: false
+	compile group: 'org.codehaus.jettison', name: 'jettison', version: '1.2', transitive: false
+	compile group: 'org.codehaus.woodstox', name: 'com.springsource.com.ctc.wstx', version: '3.2.7', transitive: false
+	compile group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.3'
+	compile group: 'org.mybatis', name: 'mybatis', version: '3.5.5', transitive: false
+	compile group: 'org.mybatis', name: 'mybatis-spring', version: '2.0.5', transitive: false
+	compile group: 'org.mybatis.scripting', name: 'mybatis-velocity', version: '2.1.0', transitive: false
+	compile group: 'org.ow2.asm', name: 'asm', version: '6.2.1', transitive: false
+	compile group: 'org.ow2.asm', name: 'asm-analysis', version: '6.2.1', transitive: false
+	compile group: 'org.ow2.asm', name: 'asm-commons', version: '6.2.1', transitive: false
+	compile group: 'org.ow2.asm', name: 'asm-tree', version: '6.2.1', transitive: false
+	compile group: 'org.ow2.asm', name: 'asm-util', version: '6.2.1', transitive: false
+	compile group: 'org.slf4j', name: 'jcl-over-slf4j', version: '1.7.22', transitive: false
+	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.22', transitive: false
+	compile group: 'org.springframework', name: 'spring-aop', version: '5.2.20.RELEASE', transitive: false
+	compile group: 'org.springframework', name: 'spring-aspects', version: '5.2.20.RELEASE', transitive: false
+	compile group: 'org.springframework', name: 'spring-beans', version: '5.2.20.RELEASE', transitive: false
+	compile group: 'org.springframework', name: 'spring-context', version: '5.2.20.RELEASE', transitive: false
+	compile group: 'org.springframework', name: 'spring-context-support', version: '5.2.20.RELEASE', transitive: false
+	compile group: 'org.springframework', name: 'spring-core', version: '5.2.20.RELEASE', transitive: false
+	compile group: 'org.springframework', name: 'spring-expression', version: '5.2.20.RELEASE', transitive: false
+	compile group: 'org.springframework', name: 'spring-instrument', version: '5.2.20.RELEASE', transitive: false
+	compile group: 'org.springframework', name: 'spring-jdbc', version: '5.2.20.RELEASE', transitive: false
+	compile group: 'org.springframework', name: 'spring-jms', version: '5.2.20.RELEASE', transitive: false
+	compile group: 'org.springframework', name: 'spring-messaging', version: '5.2.20.RELEASE', transitive: false
+	compile group: 'org.springframework', name: 'spring-orm', version: '5.2.20.RELEASE', transitive: false
+	compile group: 'org.springframework', name: 'spring-oxm', version: '5.2.20.RELEASE', transitive: false
+	compile group: 'org.springframework', name: 'spring-tx', version: '5.2.20.RELEASE', transitive: false
+	compile group: 'org.springframework', name: 'spring-web', version: '5.2.20.RELEASE', transitive: false
+	compile group: 'org.springframework.batch', name: 'spring-batch-core', version: '3.0.8.RELEASE', transitive: false
+	compile group: 'org.springframework.batch', name: 'spring-batch-infrastructure', version: '3.0.8.RELEASE', transitive: false
+	compile group: 'org.springframework.batch', name: 'spring-batch-integration', version: '3.0.8.RELEASE', transitive: false
+	compile group: 'org.springframework.batch', name: 'spring-batch-test', version: '2.1.8.RELEASE', transitive: false
+	compile group: 'org.springframework.integration', name: 'spring-integration-core', version: '4.3.13.RELEASE', transitive: false
+	compile group: 'org.springframework.retry', name: 'spring-retry', version: '1.1.0.RELEASE', transitive: false
+	compile group: 'org.springframework.ws', name: 'spring-ws-core', version: '2.4.2.RELEASE', transitive: false
+	compile group: 'org.springframework.ws', name: 'spring-ws-security', version: '2.4.2.RELEASE', transitive: false
+	compile group: 'org.springframework.ws', name: 'spring-ws-support', version: '2.4.2.RELEASE', transitive: false
+	compile group: 'org.springframework.ws', name: 'spring-xml', version: '2.4.2.RELEASE', transitive: false
+}

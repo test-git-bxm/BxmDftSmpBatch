@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bxm.dft.smp.batch.dbio.DSmpEmpTst001">
+<!--Generated Fri Sep 28 13:30:52 KST 2018-->
+<select id="selectList01" parameterType="bxm.dft.smp.batch.dbio.dto.DSmpEmpTst001selectList01InDto" resultType="bxm.dft.smp.batch.dbio.dto.DSmpEmpTst001selectList01OutDto">
+SELECT    /* 샘플용직원정보TST */
+       A.FEDU_EMP_NO AS feduEmpNo    /*FW샘플 임직원번호*/
+     , A.FEDU_EMP_NM AS feduEmpNm    /*FW샘플 임직원명*/
+     , A.FEDU_OCCP_NM AS feduOccpNm    /*FW샘플 직업명*/
+     , A.FEDU_MNGR_EMP_NO AS feduMngrEmpNo    /*FW샘플 관리자임직원번호*/
+     , A.FEDU_HIRE_DT AS feduHireDt    /*FW샘플 입사일자*/
+     , A.FEDU_PAY_AMT AS feduPayAmt    /*FW샘플 급여금액*/
+     , A.FEDU_DEPT_NO AS feduDeptNo    /*FW샘플 부서번호*/
+  FROM SMP_EMP_TST A
+ WHERE A.FEDU_DEPT_NO = #{feduDeptNo, jdbcType=VARCHAR}
+</select>
+<update id="update01" parameterType="bxm.dft.smp.batch.dbio.dto.DSmpEmpTst001selectList01OutDto">
+UPDATE SMP_EMP_TST    /* 샘플용직원정보TST */
+   SET FEDU_EMP_NO = #{feduEmpNo}    /* FW샘플 임직원번호 */
+     , FEDU_EMP_NM = #{feduEmpNm}    /* FW샘플 임직원명 */
+     , FEDU_OCCP_NM = #{feduOccpNm}    /* FW샘플 직업명 */
+     , FEDU_MNGR_EMP_NO = #{feduMngrEmpNo}    /* FW샘플 관리자임직원번호 */
+     , FEDU_HIRE_DT = #{feduHireDt}    /* FW샘플 입사일자 */
+     , FEDU_PAY_AMT = #{feduPayAmt}    /* FW샘플 급여금액 */
+     , FEDU_DEPT_NO = #{feduDeptNo}    /* FW샘플 부서번호 */ 
+WHERE FEDU_EMP_NO = #{feduEmpNo}
+</update>
+<select id="selectList02" resultType="bxm.dft.smp.batch.dbio.dto.DSmpEmpTst001selectList01OutDto">
+SELECT    /* 샘플용직원정보TST */
+       A.FEDU_EMP_NO AS feduEmpNo    /*FW샘플 임직원번호*/
+     , A.FEDU_EMP_NM AS feduEmpNm    /*FW샘플 임직원명*/
+     , A.FEDU_OCCP_NM AS feduOccpNm    /*FW샘플 직업명*/
+     , A.FEDU_MNGR_EMP_NO AS feduMngrEmpNo    /*FW샘플 관리자임직원번호*/
+     , A.FEDU_HIRE_DT AS feduHireDt    /*FW샘플 입사일자*/
+     , A.FEDU_PAY_AMT AS feduPayAmt    /*FW샘플 급여금액*/
+     , A.FEDU_DEPT_NO AS feduDeptNo    /*FW샘플 부서번호*/
+  FROM SMP_EMP_TST A
+</select>
+</mapper>

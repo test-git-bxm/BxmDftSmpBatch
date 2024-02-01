@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.bankwareglobal.com/schema/batchex http://www.bankwareglobal.com/schema/batchex/spring-batch-ex.xsd
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="classpath:JobConfig.xml"/>
+
+    <job-component xmlns="http://www.bankwareglobal.com/schema/batchex" id="jobcomp" with-dependon="true">
+        <base-package name="bxm.dft.smp.batch.bean">
+            <include name="MSmpVariableToVariable*Btch"/>
+        </base-package>
+    </job-component>
+
+    <!-- 
+    	* 배치작업 : VARIABLE TO VARIABLE 샘플
+    	* 배치스텝
+    		- JSmpVariableToVariable100 : VARIABLE TO VARIABLE 샘플 샘플 초기화 처리
+    		- JSmpVariableToVariable200 : 파일에서 문자열을 Read하여 문자열로 Write 처리  
+     -->
+    <job id="JSmpVariableToVariable" xmlns="http://www.bankwareglobal.com/schema/batchex">
+    	<step id="JSmpVariableToVariable100" next="JSmpVariableToVariable200" parent="parentStep">
+            <tasklet ref="MSmpVariableToVariableInitBtch"/>
+        </step>
+        <step id="JSmpVariableToVariable200" parent="parentStep">
+            <tasklet>
+                <chunk reader="RJSmpVariableToVariable200" processor="MSmpVariableToVariableBtch" writer="WJSmpVariableToVariable200"/>
+            </tasklet>
+        </step>
+    </job>
+	
+	
+	<!-- 
+		* 샘플용직원정보 문자열로 1라인씩 Read 하기위한 bean 설정 
+	 -->
+    <bean id="RJSmpVariableToVariable200" parent="RVariable" scope="step">
+        <property name="name" value="RBSmpVariableToVariable200" />
+        <property name="resource" value="file:///data1/prod/bxm400/dat/rvariable_file_#{jobParameters['oDate']}.txt" />
+        <property name="encoding" value="UTF-8" />
+	</bean>
+	
+	<!-- 
+		* 샘플용직원정보를 문자열로 1라인씩 Write 하기위한 bean 설정 
+	 -->
+	<bean id="WJSmpVariableToVariable200" parent="WVariable" scope="step">
+        <property name="name" value="WBSmpVariableToVariable200" />
+        <property name="resource" value="file:///data1/prod/bxm400/dat/wvariable_file_#{jobParameters['oDate']}.txt" />
+        <property name="encoding" value="UTF-8" />
+	</bean>
+</beans>

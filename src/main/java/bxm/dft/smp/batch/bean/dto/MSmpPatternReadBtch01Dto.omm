@@ -1,0 +1,5 @@
+OMM bxm.dft.smp.batch.bean.dto.MSmpPatternReadBtch01Dto
+<description="">
+{
+	String patternA<length=10>;
+}

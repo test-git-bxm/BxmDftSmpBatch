@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.bankwareglobal.com/schema/batchex http://www.bankwareglobal.com/schema/batchex/spring-batch-ex.xsd
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="classpath:JobConfig.xml"/>
+	
+    <job-component xmlns="http://www.bankwareglobal.com/schema/batchex" id="jobcomp" with-dependon="true">
+        <base-package name="bxm.dft.smp.batch.bean">
+            <include name="MSmpPatternReadBtch*"/>
+        </base-package>
+    </job-component>
+    
+    <!-- 
+    	* 배치작업 : 배치 Pattern read 샘플
+    	* 배치스텝
+    		- JSmpPatternRead100 : 배치 Pattern read 샘플
+    		 - AAA로 시작하는 패턴 (매칭길이 4)
+    		 - BBB로 시작하는 패턴 (매칭길이 4)
+    		 - AAA, BBB가 아닌 다른 패턴 (매칭길이 5)
+     -->
+    <job id="JSmpPatternRead" xmlns="http://www.bankwareglobal.com/schema/batchex">
+        <step id="JSmpPatternRead100" parent="parentStep" >
+            <tasklet>
+                <chunk reader="RJSmpPatternRead100" processor="MSmpPatternReadBtch" writer="MSmpPatternReadBtch" />
+            </tasklet>
+        </step>
+    </job>
+    
+    <!-- 
+		* 샘플용직원정보를 Pattern Matching으로 read하기 위한 bean 설정 
+	 -->
+    <bean id="RJSmpPatternRead100" parent="PatternMatching" scope="step">
+        <property name="resource" value="file:///data1/prod/bxm400/dat/pattern_input.txt"/>
+        <property name="encoding" value="UTF-8" />
+        <property name="patternItemMapper">
+            <list>
+                <bean parent="patternType">
+                    <property name="targetType" value="bxm.dft.smp.batch.bean.dto.MSmpPatternReadBtch01Dto" />
+                    <property name="pattern" value="AAA*" />
+                    <property name="matchLength" value="4" />
+                </bean>
+                <bean parent="patternType">
+                    <property name="targetType" value="bxm.dft.smp.batch.bean.dto.MSmpPatternReadBtch02Dto" />
+                    <property name="pattern" value="BBB*" />
+                    <property name="matchLength" value="4" />
+                </bean>
+                <!--  
+                	마지막 패턴 처리 (필요할 경우 작성)
+                	pattern을 *으로 설정하려면 matchLength를 설정한 길이보다 크게 정의하여야 한다.
+                 -->
+                <bean parent="patternType">
+                    <property name="targetType" value="bxm.dft.smp.batch.bean.dto.MSmpPatternReadBtch03Dto" />
+                    <property name="pattern" value="*" />
+                    <property name="matchLength" value="5" />
+                </bean>
+            </list>
+        </property>
+	</bean>
+	
+</beans>

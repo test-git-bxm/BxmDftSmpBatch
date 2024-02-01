@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.bankwareglobal.com/schema/batchex http://www.bankwareglobal.com/schema/batchex/spring-batch-ex.xsd
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="classpath:JobConfig.xml"/>
+	
+    <job-component xmlns="http://www.bankwareglobal.com/schema/batchex" id="jobcomp" with-dependon="true">
+        <base-package name="bxm.dft.smp.batch.bean">
+            <include name="MSmpTaskletBtch*"/>
+        </base-package>
+    </job-component>
+    
+    <!-- 
+    	* 배치작업 : 배치 Tasklet 샘플
+    	* 배치스텝
+    		- JSmpTasklet100 : 샘플용직원정보TMP 테이블 데이터 생성
+     -->
+    <job id="JSmpTasklet" xmlns="http://www.bankwareglobal.com/schema/batchex">
+        <step id="JSmpTasklet100" parent="parentStep" >
+           <tasklet ref="MSmpTaskletBtch"/>
+        </step>
+    </job>
+</beans>

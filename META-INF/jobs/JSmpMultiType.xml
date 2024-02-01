@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.bankwareglobal.com/schema/batchex http://www.bankwareglobal.com/schema/batchex/spring-batch-ex.xsd
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="classpath:JobConfig.xml"/>
+
+    <job-component xmlns="http://www.bankwareglobal.com/schema/batchex" id="jobcomp" with-dependon="true">
+        <base-package name="bxm.dft.smp.batch.bean">
+            <include name="MSmpMultiType*Btch"/>
+        </base-package>
+    </job-component>
+   
+    <!-- 
+    	* 배치작업 : RMultiType(FIXED) TO WMultiType(DELIMITED) 샘플
+    	* 배치스텝
+    		- JSmpMultiType100 : RMultiType(FIXED) TO WMultiType(DELIMITED) 샘플
+     -->
+    <job id="JSmpMultiType" xmlns="http://www.bankwareglobal.com/schema/batchex">
+        <step id="JSmpMultiType100" parent="parentStep">
+            <tasklet>
+                <chunk reader="RJSmpMultiType100" processor="MSmpMultiTypeBtch" writer="WJSmpMultiType100"/>
+            </tasklet>
+        </step>
+    </job>
+	
+	
+	<!-- 
+		* MultiType Fixed File을 Read 하기위한 bean 설정 
+	 -->
+    <bean id="RJSmpMultiType100" parent="RMultiTypeFix" scope="step">
+        <property name="resource" value="file:///data1/prod/bxm400/dat/input.txt" />
+        <property name="encoding" value="UTF-8" />
+        <property name="headerLine" value="1"/>
+		<property name="footerLine" value="1"/>
+        <property name="headerTargetType" value="bxm.dft.smp.batch.bean.dto.MSmpMultiTypeBtch02Dto"/>
+		<property name="bodyTargetType" value="bxm.dft.smp.batch.bean.dto.MSmpMultiTypeBtch03Dto"/>
+		<property name="footerTargetType" value="bxm.dft.smp.batch.bean.dto.MSmpMultiTypeBtch04Dto"/>
+	</bean>
+	
+	<!-- 
+		* MultiType Delimited File 로 Write 하기위한 bean 설정 
+	 -->
+	<bean id="WJSmpMultiType100" parent="WMultiTypeDelimit" scope="step">
+        <property name="resource" value="file:///data1/prod/bxm400/dat/output.txt" />
+        <property name="encoding" value="UTF-8" />
+        <property name="delimiter" value=";"/>
+        <property name="targetType" value="bxm.dft.smp.batch.bean.dto.MSmpMultiTypeBtch01Dto" />
+	</bean>
+	
+</beans>

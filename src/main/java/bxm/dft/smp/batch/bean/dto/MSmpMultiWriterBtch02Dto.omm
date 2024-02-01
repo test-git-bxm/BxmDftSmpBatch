@@ -1,0 +1,6 @@
+OMM bxm.dft.smp.batch.bean.dto.MSmpMultiWriterBtch02Dto
+<description="">
+{
+	bxm.dft.smp.batch.bean.dto.MSmpMultiWriterBtch03Dto sub01<length=20>;
+	bxm.dft.smp.batch.bean.dto.MSmpMultiWriterBtch04Dto sub02<length=20>;
+}

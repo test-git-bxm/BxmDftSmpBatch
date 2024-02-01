@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bxm.dft.smp.batch.dbio.DSmpDeptTst001">
+<!--Generated Tue Sep 06 14:28:25 KST 2016-->
+<select id="selectOne01" resultType="bxm.dft.smp.batch.dbio.dto.DSmpDeptTst001Dto">
+SELECT    /* 샘플용부서정보TST */
+       A.FEDU_DEPT_NO AS feduDeptNo    /*FW샘플 부서번호*/
+     , A.FEDU_DEPT_NM AS feduDeptNm    /*FW샘플 부서명*/
+     , A.FEDU_ADR_CTNT AS feduAdrCtnt    /*FW샘플 주소내용*/
+  FROM SMP_DEPT_TST A
+ WHERE A.FEDU_DEPT_NO = #{feduDeptNo, jdbcType=VARCHAR}
+</select>
+</mapper>

@@ -1,0 +1,7 @@
+OMM bxm.dft.smp.batch.bean.dto.MSmpDelimitedMultiTypeBtch01Dto
+<description="DELIMITED MULTI TYPE 샘플 01 Dto">
+{
+	bxm.dft.smp.batch.bean.dto.MSmpDelimitedMultiTypeBtch02Dto header<length=0 description="헤더">;
+	bxm.dft.smp.batch.bean.dto.MSmpDelimitedMultiTypeBtch03Dto body<length=0 description="바디">;
+	bxm.dft.smp.batch.bean.dto.MSmpDelimitedMultiTypeBtch04Dto footer<length=0 description="푸터">;
+}

@@ -1,0 +1,5 @@
+OMM bxm.dft.smp.batch.dbio.dto.DSmpEmpTst001selectList01InDto
+<description="SampleEmployeeSelect SelectList01Out DTO">
+{
+	Integer feduDeptNo<length=2 description="FWSample deptNo">;
+}

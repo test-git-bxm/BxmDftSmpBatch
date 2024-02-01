@@ -1,0 +1,6 @@
+OMM bxm.dft.smp.batch.bean.dto.MSmpFixedMultiTypeBtch02Dto
+<description="FIXED MULTI TYPE 샘플 02 Dto(Header)">
+{
+	String fileType<length=10 description="파일유형">;
+	String procDate<length=8 description="처리일자">;
+}

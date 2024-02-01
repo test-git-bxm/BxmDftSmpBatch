@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.bankwareglobal.com/schema/batchex http://www.bankwareglobal.com/schema/batchex/spring-batch-ex.xsd
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="classpath:JobConfig.xml"/>
+
+    <job-component xmlns="http://www.bankwareglobal.com/schema/batchex" id="jobcomp" with-dependon="true">
+        <base-package name="bxm.dft.smp.batch.bean">
+            <include name="MSmpMultiFileWrite*Btch"/>
+        </base-package>
+    </job-component>
+	
+	<!-- 
+    	* 배치작업 : MULTI FILE WRITE 샘플
+    	* 배치스텝
+    		- JSmpMultiFileWrite100 : MULTI FILE WRITE 샘플 초기화 처리
+    		- JSmpMultiFileWrite200 : 2개의 파일을 직접 Open 하여 File Write 처리
+     -->
+	
+    <job id="JSmpMultiFileWrite" xmlns="http://www.bankwareglobal.com/schema/batchex">
+        <step id="JSmpMultiFileWrite100" next="JSmpMultiFileWrite200" parent="parentStep">
+        	<tasklet ref="MSmpMultiFileWriteInitBtch"/>
+        </step>
+        <step id="JSmpMultiFileWrite200" parent="parentStep">
+            <tasklet>
+                <chunk reader="MSmpMultiFileWriteBtch" processor="MSmpMultiFileWriteBtch" writer="MSmpMultiFileWriteBtch"/>
+            </tasklet>
+        </step>
+    </job>
+    
+</beans>

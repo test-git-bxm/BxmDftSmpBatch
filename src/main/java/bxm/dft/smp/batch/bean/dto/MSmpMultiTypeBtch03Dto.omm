@@ -1,0 +1,6 @@
+OMM bxm.dft.smp.batch.bean.dto.MSmpMultiTypeBtch03Dto
+<description="">
+{
+	String dummy<length=10>;
+	String dummy1<length=10>;
+}

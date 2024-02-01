@@ -1,0 +1,11 @@
+OMM bxm.dft.smp.batch.bean.dto.MSmpMultiFileWriteBtch01Dto
+<description="MULTI FILE WRITE 샘플 01 DTO ">
+{
+	Integer feduEmpNo<length=4 description="FW샘플 임직원번호">;
+	String feduEmpNm<length=10 description="FW샘플 임직원명">;
+	String feduOccpNm<length=9 description="FW샘플 직업명">;
+	Integer feduMngrEmpNo<length=4 description="FW샘플 관리자임직원번호">;
+	String feduHireDt<length=8 description="FW샘플 입사일자">;
+	BigDecimal feduPayAmt<length=19 decimal=2 description="FW샘플 급여금액">;
+	Integer feduDeptNo<length=2 description="FW샘플 부서번호">;
+}

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.bankwareglobal.com/schema/batchex http://www.bankwareglobal.com/schema/batchex/spring-batch-ex.xsd
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="classpath:JobConfig.xml"/>
+
+    <job-component xmlns="http://www.bankwareglobal.com/schema/batchex" id="jobcomp" with-dependon="true">
+        <base-package name="bxm.dft.smp.batch.bean">
+            <include name="MSmpMultiFileRead*Btch"/>
+        </base-package>
+    </job-component>
+
+    <!-- 
+    	* 배치작업 :MULTI FILE READ 샘플
+    	* 배치스텝
+    		- JSmpMultiFileRead100 : MULTI FILE READ 샘플 초기화 처리
+    		- JSmpMultiFileRead200 : 2개의 파일을 직접 Open 하여 DB에 Insert 처리
+     -->
+    <job id="JSmpMultiFileRead" xmlns="http://www.bankwareglobal.com/schema/batchex">
+    	<step id="JSmpMultiFileRead100" next="JSmpMultiFileRead200" parent="parentStep">
+            <tasklet ref="MSmpMultiFileReadInitBtch"/>
+        </step>
+        <step id="JSmpMultiFileRead200" parent="parentStep">
+            <tasklet>
+                <chunk reader="MSmpMultiFileReadBtch" processor="MSmpMultiFileReadBtch" writer="MSmpMultiFileReadBtch"/>
+            </tasklet>
+        </step>
+    </job>
+
+</beans>

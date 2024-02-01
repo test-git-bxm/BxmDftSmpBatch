@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.bankwareglobal.com/schema/batchex http://www.bankwareglobal.com/schema/batchex/spring-batch-ex.xsd
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="classpath:JobConfig.xml"/>
+
+    <job-component xmlns="http://www.bankwareglobal.com/schema/batchex" id="jobcomp" with-dependon="true">
+        <base-package name="bxm.dft.smp.batch.bean">
+            <include name="MSmpDelimitedToDB*Btch"/>
+        </base-package>
+    </job-component>
+
+    <!-- 
+    	* 배치작업 : FILE(FIXED) TO FILE(DELIMITED) 샘플
+    	* 배치스텝
+    		- JSmpDelimitedToDB100 : FILE(FIXED) TO FILE(DELIMITED) 샘플 초기화 처리
+    		- JSmpDelimitedToDB200 : DELIMITED 형식의 파일을 읽어 DB에 Insert 처리
+     -->
+    <job id="JSmpDelimitedToDB" xmlns="http://www.bankwareglobal.com/schema/batchex">
+    	<step id="JSmpDelimitedToDB100" next="JSmpDelimitedToDB200" parent="parentStep">
+            <tasklet ref="MSmpDelimitedToDBInitBtch"/>
+        </step>
+        <step id="JSmpDelimitedToDB200" parent="parentStep">
+            <tasklet>
+                <chunk reader="RJSmpDelimitedToDB200" processor="MSmpDelimitedToDBBtch" writer="MSmpDelimitedToDBBtch"/>
+            </tasklet>
+        </step>
+    </job>
+	
+	<!-- 
+		* 샘플용직원정보 Delimited File을 Read 하기위한 bean 설정 
+	 -->
+    <bean id="RJSmpDelimitedToDB200" parent="RDelimit" scope="step">
+        <property name="resource" value="file:///data1/prod/bxm400/dat/delimited_file_#{jobParameters['oDate']}.txt" />
+        <property name="encoding" value="UTF-8" />
+        <property name="delimiter" value=";" />
+        <property name="targetType" value="bxm.dft.smp.batch.bean.dto.MSmpDelimitedToDBBtch01Dto" />
+	</bean>
+</beans>

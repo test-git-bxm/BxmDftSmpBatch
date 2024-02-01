@@ -1,0 +1,11 @@
+OMM bxm.dft.smp.batch.bean.dto.MSmpDelimitedToDBBtch01Dto
+<description="FILE(DELIMITED) TO DB Sample 01 DTO">
+{
+	Integer feduEmpNo<length=4 description="FWSample empNo">;
+	String feduEmpNm<length=10 description="FWSample empNm">;
+	String feduOccpNm<length=9 description="FWSample occpNm">;
+	Integer feduMngrEmpNo<length=4 description="FWSample mngrEmpNo">;
+	String feduHireDt<length=8 description="FWSample enteringDate">;
+	BigDecimal feduPayAmt<length=19 decimal=2 description="FWSample payAmt">;
+	Integer feduDeptNo<length=2 description="FWSample deptNo">;
+}

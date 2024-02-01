@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.bankwareglobal.com/schema/batchex http://www.bankwareglobal.com/schema/batchex/spring-batch-ex.xsd
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="classpath:JobConfig.xml"/>
+
+    <job-component xmlns="http://www.bankwareglobal.com/schema/batchex" id="jobcomp" with-dependon="true">
+        <base-package name="bxm.dft.smp.batch.bean">
+       		<include name="MSmp*"/>
+        </base-package>
+    </job-component>
+	
+	<!-- 
+    	* 배치작업 : Partitioning 샘플
+    	* 배치스텝
+    		- JSmpPartitioning100 : Partitioning 처리하기 위한 Step
+     -->
+    <job id="JSmpPartitioning" xmlns="http://www.bankwareglobal.com/schema/batchex">
+    	<step id="JSmpPartitioning100" parent="parentStep">
+            <partition partitioner="MSmpPartitioning" step="JSmpPartitioning200">
+            	<handler grid-size="3"/> 
+            </partition>
+        </step>
+    </job>
+    
+    <!-- 
+		* Partitioning 처리 Step 설정 (partitioner가 설정된 step에서 호출) 
+	 -->
+    <step id="JSmpPartitioning200" parent="parentStep" xmlns="http://www.bankwareglobal.com/schema/batchex">
+        <tasklet>
+           	<chunk reader="MSmpPartitioningDBToFixedBtch" processor="MSmpPartitioningDBToFixedBtch" writer="WJSmpPartitioning200"/>
+        </tasklet>
+    </step>
+	
+    <!-- 
+		* 샘플용직원정보 Fixed File Write 처리 bean 설정 
+		 - deptNo값으로 파일명 설정
+	 -->
+    <bean id="WJSmpPartitioning200" parent="WFix" scope="step">
+        <property name="resource" value="file:///data1/prod/bxm400/dat/fixed_file_#{stepExecutionContext['deptNo']}.txt" />
+        <property name="encoding" value="UTF-8" />
+        <property name="targetType" value="bxm.dft.smp.batch.bean.dto.MSmpDBToFixedBtch01Dto" />
+	</bean>
+</beans>

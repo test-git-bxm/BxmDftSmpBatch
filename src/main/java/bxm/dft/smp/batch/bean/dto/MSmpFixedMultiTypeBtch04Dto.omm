@@ -1,0 +1,5 @@
+OMM bxm.dft.smp.batch.bean.dto.MSmpFixedMultiTypeBtch04Dto
+<description="FIXED MULTI TYPE 샘플 04 Dto(Footer)">
+{
+	Integer procCount<length=8 description="처리건수">;
+}

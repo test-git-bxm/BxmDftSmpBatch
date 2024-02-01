@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.bankwareglobal.com/schema/batchex http://www.bankwareglobal.com/schema/batchex/spring-batch-ex.xsd
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="classpath:JobConfig.xml"/>
+
+    <job-component xmlns="http://www.bankwareglobal.com/schema/batchex" id="jobcomp" with-dependon="true">
+        <base-package name="bxm.dft.smp.batch.bean">
+            <include name="MSmpFixedToDelimited*Btch"/>
+        </base-package>
+    </job-component>
+   
+    <!-- 
+    	* 배치작업 : FILE(FIXED) TO FILE(DELIMITED) 샘플
+    	* 배치스텝
+    		- JSmpFixedToDelimited100 : FILE(FIXED) TO FILE(DELIMITED) 샘플 초기화 처리
+    		- JSmpFixedToDelimited200 : FIXED 형식의 파일을 DELIMITED 형식의 파일로 Write 처리
+     -->
+    <job id="JSmpFixedToDelimited" xmlns="http://www.bankwareglobal.com/schema/batchex">
+    	<step id="JSmpFixedToDelimited100" next="JSmpFixedToDelimited200" parent="parentStep">
+            <tasklet ref="MSmpFixedToDelimitedInitBtch"/>
+        </step>
+        <step id="JSmpFixedToDelimited200" parent="parentStep">
+            <tasklet>
+                <chunk reader="RJSmpFixedToDelimited200" processor="MSmpFixedToDelimitedBtch" writer="WJSmpFixedToDelimited200"/>
+            </tasklet>
+        </step>
+    </job>
+	
+	
+	<!-- 
+		* 샘플용직원정보 Fixed File을 Read 하기위한 bean 설정 
+	 -->
+    <bean id="RJSmpFixedToDelimited200" parent="RFix" scope="step">        
+        <property name="resource" value="file:///data1/prod/bxm400/dat/fixed_file_#{jobParameters['oDate']}.txt" />
+        <property name="encoding" value="UTF-8" />
+        <property name="targetType" value="bxm.dft.smp.batch.bean.dto.MSmpFixedToDelimitedBtch01Dto" />
+	</bean>
+	
+	<!-- 
+		* 샘플용직원정보를 Delimited File로 Write 하기위한 bean 설정 
+	 -->
+	<bean id="WJSmpFixedToDelimited200" parent="WDelimit" scope="step">
+        <property name="name" value="WBSmpFixedToDelimited200" />
+        <property name="resource" value="file:///data1/prod/bxm400/dat/delimited_file_#{jobParameters['oDate']}.txt" />
+        <property name="encoding" value="UTF-8" />
+        <property name="delimiter" value=";"/>
+        <property name="targetType" value="bxm.dft.smp.batch.bean.dto.MSmpFixedToDelimitedBtch01Dto" />
+	</bean>
+	
+</beans>
